@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:h="http://xmlns.jcp.org/jsf/html"
+ xmlns:p="http://primefaces.org/ui"
+ xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Insert title here</title>
+</h:head>
+<body>
+   <h:outputText value="ma première page"/>
+   <h:messages style="prenom:red"></h:messages>
+   
+   <h:form>
+      
+      <h:outputLabel value="Nom"/>
+      <h:inputText requiredMessage="obligatoire" required="true" value="#{clientBean.nom}"/>
+      
+      <h:outputLabel value="prenom"/>
+      <h:inputText requiredMessage="obligatoire" required="true"  value="#{clientBean.prenom}"/>
+      
+      <h:outputLabel value="age"/>
+      <h:inputText requiredMessage="obligatoire" required="true"  value="#{clientBean.age}">
+          <f:validateLongRange maximum="20" minimum="10"></f:validateLongRange>
+      </h:inputText>
+      
+      
+      <h:commandButton value="Save" action="#{clientBean.add}"/>
+    
+   
+   </h:form>
+   
+     
+  <h:form>
+      <h:commandButton  value="redirect" action="#{clientBean.redirect}"   />
+      <h:commandButton value="forward"  action="#{clientBean.forward}"  />
+  </h:form>
+   <h:form>
+   <p:dataTable paginator="true" rows="5" value="#{clientBean.clients}" var="c" >
+       
+       <p:column>
+          <h:outputText value="#{c.nom}"></h:outputText>
+       </p:column>
+       <p:column>
+          <h:outputText value="#{c.prenom}"></h:outputText>
+       </p:column>
+       <p:column>
+          <h:outputText value="#{c.age}"></h:outputText>
+       </p:column>
+       <p:column style="width:32px;text-align: center">
+             <p:commandButton action="#{clientBean.getOne(c.id)}" update=":form:carDetail" oncomplete="PF('carDialog').show()" icon="ui-icon-search" title="View">
+               
+            </p:commandButton>
+        </p:column>
+        
+       
+   </p:dataTable>
+   </h:form>
+   <h:form id="form">
+         <p:dialog header="Car Info" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+        <p:outputPanel id="carDetail" style="text-align:center;">
+            <p:panelGrid  columns="2">
+                <h:outputText value="Id:" />
+                <h:outputText value="#{clientBean.client.id}" />
+ 
+                <h:outputText value="nom" />
+                <h:outputText value="#{clientBean.client.nom}" />
+ 
+                <h:outputText value="prenom:" />
+                <h:outputText value="#{clientBean.client.prenom}" style="prenom:#{clientBean.client.prenom}"/>
+ 
+                <h:outputText value="age" />
+                <h:outputText value="#{clientBean.client.age}" />
+            </p:panelGrid>
+        </p:outputPanel>
+    </p:dialog>
+ 
+   
+   </h:form>
+   
+   <h:form>
+      
+      <h:selectOneMenu value="#{clientBean.age}">
+          <f:selectItem itemLabel="10" itemValue="10" />
+          <f:selectItem itemLabel="20" itemValue="20" />
+          <f:selectItem itemLabel="30" itemValue="30" />
+          <f:selectItem itemLabel="40" itemValue="40" />
+          <f:ajax update=":form3:c,:form2:d"  listener="#{clientBean.get()}" event="change"></f:ajax>
+      </h:selectOneMenu>
+       <br></br>
+       <br></br>
+      
+   
+   </h:form>
+   <h:form id="form3">
+       <h:outputText id="c" style="prenom:red" value="#{clientBean.age}"></h:outputText>
+   </h:form>
+   
+   <h:form id="form2">
+       <h:outputText id="d" style="prenom:red" value="#{clientBean.age}"></h:outputText>
+   </h:form>
+   
+   
+   <h:form>
+       <h:inputText  value="#{clientBean.nbr1}"/>
+       <h:inputText value="#{clientBean.nbr2}"/>
+       <p:commandButton value="getNbr">
+           <f:ajax event="click" listener="#{clientBean.getNbr}" />
+       </p:commandButton>
+   </h:form>
+   
+   <h:form>
+       
+       <p:commandButton value="getNbr">
+            <f:actionListener binding="#{clientBean.getNbrNbr1()}"/>
+            <f:actionListener binding="#{clientBean.getNbrNbr2()}"/>
+       </p:commandButton>
+   </h:form>
+   
+   
+   
+   <h:form>
+       <h:outputText value="nbr 1 : "></h:outputText>
+       <h:inputText  value="#{infoBean.nbr1}">
+           <f:ajax render="add" event="keyup" listener="#{infoBean.add()}"/>
+       </h:inputText>
+       <h:outputText value="nbr 2 : "></h:outputText>
+       <h:inputText   value="#{infoBean.nbr2}">
+          <f:ajax render="add" event="keyup" listener="#{infoBean.add()}"></f:ajax>
+       </h:inputText>
+       <p:separator></p:separator>
+       <h:outputText style="color:red" id="add" value="result Add  : #{infoBean.resultAdd}"></h:outputText>
+       <p:separator></p:separator>
+       <h:outputText value="result Multi #{infoBean.resultMulti}"></h:outputText>
+   </h:form>
+   
+   
+   
+</body>
+</html>
